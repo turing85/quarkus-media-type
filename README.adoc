@@ -1,4 +1,5 @@
 = quarkus-media-type
+
 Sample, showing how to return different media types from the same endpoint.
 
 == Contributors ✨
