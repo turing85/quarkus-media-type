@@ -1,0 +1,4 @@
+application:
+  response:
+    hello: hello
+    foo: foo
