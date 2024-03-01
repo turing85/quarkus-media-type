@@ -26,7 +26,7 @@
         <quarkus.platform.version>3.8.1</quarkus.platform.version>
 
         <!-- Test dependency versions -->
-        <truth.version>1.4.1</truth.version>
+        <truth.version>1.4.2</truth.version>
 
         <!-- Project setup -->
         <dependency-check-maven.skip>true</dependency-check-maven.skip>
