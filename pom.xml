@@ -135,6 +135,7 @@
                     <compilerArgs>
                         <arg>-parameters</arg>
                     </compilerArgs>
+                    <proc>full</proc>
                 </configuration>
             </plugin>
             <plugin>
