@@ -295,6 +295,22 @@
             </properties>
         </profile>
         <profile>
+            <id>ci-native-compressed</id>
+            <activation>
+                <property>
+                    <name>ci-native-compressed</name>
+                </property>
+            </activation>
+            <properties>
+                <formatter-maven-plugin.skip>true</formatter-maven-plugin.skip>
+                <impsort-maven-plugin.skip>true</impsort-maven-plugin.skip>
+                <quarkus.container-image.additional-tags>native</quarkus.container-image.additional-tags>
+                <quarkus.docker.dockerfile-native-path>src/main/container/Containerfile.native-distroless-compressed</quarkus.docker.dockerfile-native-path>
+                <quarkus.native.enabled>true</quarkus.native.enabled>
+                <surefire-plugin.skip>true</surefire-plugin.skip>
+            </properties>
+        </profile>
+        <profile>
             <id>ci-owasp</id>
             <activation>
                 <property>
@@ -318,7 +334,6 @@
                 </property>
             </activation>
             <properties>
-                <dependency-check-maven.skip>true</dependency-check-maven.skip>
                 <formatter-maven-plugin.skip>true</formatter-maven-plugin.skip>
                 <impsort-maven-plugin.skip>true</impsort-maven-plugin.skip>
             </properties>
@@ -361,10 +376,10 @@
             </properties>
         </profile>
         <profile>
-            <id>skipFormat</id>
+            <id>skip-format</id>
             <activation>
                 <property>
-                    <name>skipFormat</name>
+                    <name>skip-format</name>
                 </property>
             </activation>
             <properties>
