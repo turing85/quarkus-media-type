@@ -19,13 +19,13 @@
         <source-plugin.version>3.3.1</source-plugin.version>
         <surefire-plugin.version>3.4.0</surefire-plugin.version>
 
-        <!-- Dependency versions -->
-        <lombok.version>1.18.34</lombok.version>
-
         <!-- Quarkus versions -->
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
         <quarkus.platform.version>3.13.2</quarkus.platform.version>
+
+        <!-- Dependency versions -->
+        <lombok.version>1.18.34</lombok.version>
 
         <!-- Test dependency versions -->
         <truth.version>1.4.4</truth.version>
@@ -61,6 +61,8 @@
         <quarkus.native.builder-image>quay.io/quarkus/ubi-quarkus-mandrel-builder-image:23.1.4.0-Final-java21-2024-08-11@sha256:4407eee3091930c136de860e66cbdf728ba4e9feebd77eb09e186f630b08daac</quarkus.native.builder-image>
         <quarkus.native.container-build>true</quarkus.native.container-build>
         <quarkus.package.jar.add-runner-suffix>false</quarkus.package.jar.add-runner-suffix>
+
+        <surefire-plugin.skip>false</surefire-plugin.skip>
     </properties>
 
     <url>https://github.com/turing85/quarkus-media-type</url>
@@ -162,7 +164,7 @@
                 <version>${assembly-plugin.version}</version>
                 <executions>
                     <execution>
-                        <id>tar-gz</id>
+                        <id>tar-gz-fast-jar</id>
                         <goals>
                             <goal>single</goal>
                         </goals>
@@ -171,7 +173,7 @@
                             <appendAssemblyId>false</appendAssemblyId>
                             <inlineDescriptors>
                                 <inlineDescriptor>
-                                    <id>tar-gz</id>
+                                    <id>tar-gz-fast-jar</id>
                                     <includeBaseDirectory>false</includeBaseDirectory>
                                     <formats>
                                         <format>tar.gz</format>
@@ -197,7 +199,6 @@
                         <phase>package</phase>
                         <configuration>
                             <appendAssemblyId>true</appendAssemblyId>
-                            <finalName>elf</finalName>
                             <inlineDescriptors>
                                 <inlineDescriptor>
                                     <id>elf</id>
@@ -282,10 +283,10 @@
                 <executions>
                     <execution>
                         <id>attach-sources</id>
-                        <phase>verify</phase>
                         <goals>
                             <goal>jar-no-fork</goal>
                         </goals>
+                        <phase>verify</phase>
                     </execution>
                 </executions>
             </plugin>
@@ -312,14 +313,28 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Quarkus dependencies -->
+        <!-- Logging dependencies -->
         <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-container-image-docker</artifactId>
+            <groupId>org.jboss.logging</groupId>
+            <artifactId>commons-logging-jboss-logging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.logmanager</groupId>
+            <artifactId>log4j-jboss-logmanager</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jboss.logmanager</groupId>
             <artifactId>log4j2-jboss-logmanager</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.slf4j</groupId>
+            <artifactId>slf4j-jboss-logmanager</artifactId>
+        </dependency>
+
+        <!-- Quarkus dependencies -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-container-image-docker</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -398,21 +413,6 @@
             </properties>
         </profile>
         <profile>
-            <id>ci-populate-cache</id>
-            <activation>
-                <property>
-                    <name>ci-populate-cache</name>
-                </property>
-            </activation>
-            <properties>
-                <attach-elf.skip>true</attach-elf.skip>
-                <attach-fast-jar.skip>true</attach-fast-jar.skip>
-                <dependency-check-maven.skip>true</dependency-check-maven.skip>
-                <formatter-maven-plugin.skip>true</formatter-maven-plugin.skip>
-                <impsort-maven-plugin.skip>true</impsort-maven-plugin.skip>
-            </properties>
-        </profile>
-        <profile>
             <id>ci-owasp</id>
             <activation>
                 <property>
@@ -428,6 +428,21 @@
                 <impsort-maven-plugin.skip>true</impsort-maven-plugin.skip>
                 <quarkus-maven-plugin.skip>true</quarkus-maven-plugin.skip>
                 <skipTests>true</skipTests>
+            </properties>
+        </profile>
+        <profile>
+            <id>ci-populate-cache</id>
+            <activation>
+                <property>
+                    <name>ci-populate-cache</name>
+                </property>
+            </activation>
+            <properties>
+                <attach-elf.skip>true</attach-elf.skip>
+                <attach-fast-jar.skip>true</attach-fast-jar.skip>
+                <dependency-check-maven.skip>true</dependency-check-maven.skip>
+                <formatter-maven-plugin.skip>true</formatter-maven-plugin.skip>
+                <impsort-maven-plugin.skip>true</impsort-maven-plugin.skip>
             </properties>
         </profile>
         <profile>
